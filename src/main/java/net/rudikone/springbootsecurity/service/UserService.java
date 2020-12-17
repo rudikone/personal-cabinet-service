@@ -9,8 +9,6 @@ public interface UserService {
 
     public User show(Long id);
 
-    public void update(Long id, User updateUser);
-
     public void save(User user);
 
     public void delete(Long id);

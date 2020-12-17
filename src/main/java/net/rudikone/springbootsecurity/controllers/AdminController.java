@@ -14,9 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Controller
-//@RestController
 @RequestMapping(value="/admin")
-//@RequestMapping("/admin")
 public class AdminController {
 
     @Autowired
@@ -25,36 +23,32 @@ public class AdminController {
     @Autowired
     private RoleService roleService;
 
-    //@GetMapping("/users")
     @RequestMapping(value = "/users",
+            //produces = "application/json",
             method=RequestMethod.GET)
     public String getAllUsers(Model model) {
-        System.out.println(userService.getAllUsers());
         model.addAttribute("users", userService.getAllUsers());
         return "/index";
     }
 
-    //@GetMapping("/users/{id}")
     @RequestMapping(value = "/users/{id}",
-            produces = "application/json",
+            //produces = "application/json",
             method=RequestMethod.GET)
     public String show(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.show(id));
         return "/show";
     }
 
-    //@GetMapping("/users/new")
     @RequestMapping(value = "/users/new",
-            produces = "application/json",
+            //produces = "application/json",
             method=RequestMethod.GET)
     public String newUser(Model model) {
         model.addAttribute("user", new User());
         return "/new";
     }
 
-//    @PostMapping("/users")
     @RequestMapping(value = "/users",
-            produces = "application/json",
+            //produces = "application/json",
             method=RequestMethod.POST)
     public String create(@ModelAttribute("user") User user,
                          @RequestParam(value = "ADMIN", required = false) boolean isAdmin,
@@ -76,22 +70,19 @@ public class AdminController {
 
         user.setRoles(roles);
         userService.save(user);
-
         return "redirect:/admin/users";
     }
 
-    //@GetMapping("/users/{id}/edit")
     @RequestMapping(value = "/users/{id}/edit",
-            produces = "application/json",
+            //produces = "application/json",
             method=RequestMethod.GET)
     public String edit(Model model, @PathVariable("id") Long id) {
         model.addAttribute("user", userService.show(id));
         return "/edit";
     }
 
-    //@PatchMapping("/users/{id}")
     @RequestMapping(value = "/users/update/{id}",
-            produces = "application/json",
+            //produces = "application/json",
             method=RequestMethod.POST)
     public String update(@ModelAttribute("user") User user,
                          @PathVariable("id") Long id,
@@ -113,13 +104,12 @@ public class AdminController {
         }
 
         user.setRoles(roles);
-        userService.update(id, user);
+        userService.save(user);
         return "redirect:/admin/users";
     }
 
-    //@DeleteMapping("/users/{id}")
     @RequestMapping(value = "/users/{id}",
-            produces = "application/json",
+            //produces = "application/json",
             method=RequestMethod.POST)
     public String delete(@PathVariable("id") Long id) {
         userService.delete(id);
