@@ -4,8 +4,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+
+import static java.util.stream.Collectors.toList;
 
 @Entity
 @Table(name = "users")
@@ -16,8 +20,17 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", unique = true)
-    private String name;
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "age")
+    private Byte age;
+
+    @Column(name = "email", unique = true)
+    private String email;
 
     @Column(name = "password", length = 255)
     private String password;
@@ -34,9 +47,12 @@ public class User implements UserDetails {
 
     }
 
-    public User(Long id, String name, String password, Set<Role> roles) {
+    public User(Long id, String firstName, String lastName, Byte age, String email, String password, Set<Role> roles) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.email = email;
         this.password = password;
         this.roles = roles;
     }
@@ -49,12 +65,12 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     @Override
@@ -69,7 +85,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return email;
     }
 
     @Override
@@ -105,14 +121,43 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public void addRole(Role role) {
-        roles.add(role);
-        role.getUsers().add(this);
+//    public void addRole(Role role) {
+//        roles.add(role);
+//        role.getUsers().add(this);
+//    }
+//
+//    public void removeRole(Role role) {
+//        roles.remove(role);
+//        role.getUsers().remove(this);
+//    }
+
+    public String getLastName() {
+        return lastName;
     }
 
-    public void removeRole(Role role) {
-        roles.remove(role);
-        role.getUsers().remove(this);
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
+    public Byte getAge() {
+        return age;
+    }
+
+    public void setAge(Byte age) {
+        this.age = age;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+//    public List<Role> getUserRoles() {
+//        List<Role> mainList = new ArrayList<Role>();
+//        mainList.addAll(roles);
+//        return mainList;
+//    }
 }

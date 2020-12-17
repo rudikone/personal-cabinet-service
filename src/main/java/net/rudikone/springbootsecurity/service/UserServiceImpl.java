@@ -50,13 +50,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        return userRepository.findByName(userName).get();
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email).get();
     }
 
     @Override
     @Transactional
-    public User getUserByName(String name) {
-        return userRepository.findByName(name).get();
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).get();
     }
 }

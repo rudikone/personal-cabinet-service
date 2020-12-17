@@ -18,8 +18,8 @@ public class UserController {
 
     @GetMapping("")
     public String getUserPage(Model model, Principal principal) {
-        String userName = principal.getName();
-        model.addAttribute("user", userService.getUserByName(userName));
-        return "/user";
+        String email = principal.getName();
+        model.addAttribute("user", userService.getUserByEmail(email));
+        return "/userpage";
     }
 }

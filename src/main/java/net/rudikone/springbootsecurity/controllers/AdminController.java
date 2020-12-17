@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,9 +27,12 @@ public class AdminController {
     @RequestMapping(value = "/users",
             //produces = "application/json",
             method=RequestMethod.GET)
-    public String getAllUsers(Model model) {
+    public String getAllUsers(Model model, Principal principal) {
+        String email = principal.getName();
         model.addAttribute("users", userService.getAllUsers());
-        return "/index";
+        model.addAttribute("user", userService.getUserByEmail(email));
+
+        return "/adminpage";
     }
 
     @RequestMapping(value = "/users/{id}",
