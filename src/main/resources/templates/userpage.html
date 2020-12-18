@@ -21,7 +21,7 @@
         <div class="navbar-header">
             <a class="navbar-brand" style="color:white" th:text="${user.getEmail()}">VALUE</a>
             <a class="navbar-brand" style="color:white">with roles:</a>
-            <a class="navbar-brand" style="color:white" th:text="${user.getRoles()}">VALUE</a>
+            <a class="navbar-brand" style="color:white" th:text="${#strings.replace(#strings.replace(user.getRoles(),'[',''),']','')}">VALUE</a>
         </div>
         <div>
             <ul class="nav navbar-nav">
@@ -73,7 +73,7 @@
                                         <td th:text="${user.getLastName()}">VALUE</td>
                                         <td th:text="${user.getAge()}">VALUE</td>
                                         <td th:text="${user.getEmail()}">VALUE</td>
-                                        <td th:text="${user.getRoles()}">VALUE</td>
+                                        <td th:text="${#strings.replace(#strings.replace(user.getRoles(),'[',''),']','')}">VALUE</td>
                                     </tr>
                                     </tbody>
 

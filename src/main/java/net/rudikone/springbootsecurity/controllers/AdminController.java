@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Controller
-@RequestMapping(value="/admin")
+//@RequestMapping(value = "/admin")
 public class AdminController {
 
     @Autowired
@@ -24,41 +24,20 @@ public class AdminController {
     @Autowired
     private RoleService roleService;
 
-    @RequestMapping(value = "/users",
-            //produces = "application/json",
-            method=RequestMethod.GET)
-    public String getAllUsers(Model model, Principal principal) {
+    @GetMapping("/admin/users")
+    public String showAdminPage(Model model, Principal principal) {
         String email = principal.getName();
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("user", userService.getUserByEmail(email));
-
+        model.addAttribute("newUser", new User());
         return "/adminpage";
     }
 
-    @RequestMapping(value = "/users/{id}",
-            //produces = "application/json",
-            method=RequestMethod.GET)
-    public String show(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userService.show(id));
-        return "/show";
-    }
-
-    @RequestMapping(value = "/users/new",
-            //produces = "application/json",
-            method=RequestMethod.GET)
-    public String newUser(Model model) {
-        model.addAttribute("user", new User());
-        return "/new";
-    }
-
-    @RequestMapping(value = "/users",
-            //produces = "application/json",
-            method=RequestMethod.POST)
-    public String create(@ModelAttribute("user") User user,
-                         @RequestParam(value = "ADMIN", required = false) boolean isAdmin,
-                         @RequestParam(value = "USER", required = false) boolean isUser,
-                         BindingResult bindingResult) {
-
+    @PostMapping("/admin/edit")
+    public String edit(User user,
+                       @RequestParam(value = "ADMIN", required = false) boolean isAdmin,
+                       @RequestParam(value = "USER", required = false) boolean isUser,
+                       BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin/users/new";
         }
@@ -77,25 +56,26 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-    @RequestMapping(value = "/users/{id}/edit",
-            //produces = "application/json",
-            method=RequestMethod.GET)
-    public String edit(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("user", userService.show(id));
-        return "/edit";
+    @GetMapping("/admin/delete")
+    public String deleteUser(Long id) {
+        userService.delete(id);
+        return "redirect:/admin/users";
     }
 
-    @RequestMapping(value = "/users/update/{id}",
-            //produces = "application/json",
-            method=RequestMethod.POST)
-    public String update(@ModelAttribute("user") User user,
-                         @PathVariable("id") Long id,
-                         @RequestParam(value = "ADMIN", required = false) boolean isAdmin,
-                         @RequestParam(value = "USER", required = false) boolean isUser,
-                         BindingResult bindingResult) {
+    @GetMapping("/admin/findOneUser")
+    @ResponseBody
+    public User findOneUser(Long id) {
+        return userService.show(id);
+    }
+
+    @PostMapping("/admin/users/create")
+    public String addNewUser(@ModelAttribute("newUser") User user,
+                             @RequestParam(value = "ADMIN", required = false) boolean isAdmin,
+                             @RequestParam(value = "USER", required = false) boolean isUser,
+                             BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return "admin/users/edit";
+            return "admin/users/new";
         }
 
         Set<Role> roles = new HashSet<>();
@@ -109,14 +89,6 @@ public class AdminController {
 
         user.setRoles(roles);
         userService.save(user);
-        return "redirect:/admin/users";
-    }
-
-    @RequestMapping(value = "/users/{id}",
-            //produces = "application/json",
-            method=RequestMethod.POST)
-    public String delete(@PathVariable("id") Long id) {
-        userService.delete(id);
         return "redirect:/admin/users";
     }
 }
