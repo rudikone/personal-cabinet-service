@@ -53,21 +53,6 @@
 			<version>${mysql.connector.version}</version>
 		</dependency>
 
-<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.webjars/bootstrap &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>org.webjars</groupId>-->
-<!--			<artifactId>bootstrap</artifactId>-->
-<!--			<version>4.5.3</version>-->
-<!--		</dependency>-->
-
-<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.webjars.bower/jquery &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>org.webjars.bower</groupId>-->
-<!--			<artifactId>jquery</artifactId>-->
-<!--			<version>3.5.1</version>-->
-<!--		</dependency>-->
-
-
 	</dependencies>
 
 	<build>

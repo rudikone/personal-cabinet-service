@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Controller
-//@RequestMapping(value = "/admin")
 public class AdminController {
 
     @Autowired
