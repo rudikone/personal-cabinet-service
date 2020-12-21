@@ -27,66 +27,41 @@ public class AdminController {
     public String showAdminPage(Model model, Principal principal) {
         String email = principal.getName();
         model.addAttribute("users", userService.getAllUsers());
-        model.addAttribute("user", userService.getUserByEmail(email));
+        model.addAttribute("roleSet", roleService.findAll());
+
+        model.addAttribute("admin", userService.getUserByEmail(email));
+
         model.addAttribute("newUser", new User());
         return "/adminpage";
     }
 
-    @PostMapping("/admin/edit")
-    public String edit(User user,
-                       @RequestParam(value = "ADMIN", required = false) boolean isAdmin,
-                       @RequestParam(value = "USER", required = false) boolean isUser,
+
+    @PostMapping("/admin/edit/{id}")
+    public String edit(@ModelAttribute("user") User user,
+                       @PathVariable("id") Long id,
                        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin/users/new";
         }
 
-        Set<Role> roles = new HashSet<>();
-
-        if (isAdmin) {
-            roles.add(roleService.findRoleById(1));
-        }
-        if (isUser) {
-            roles.add(roleService.findRoleById(2));
-        }
-
-        user.setRoles(roles);
         userService.save(user);
         return "redirect:/admin/users";
     }
 
-    @GetMapping("/admin/delete")
-    public String deleteUser(Long id) {
+    @PostMapping("/admin/delete/{id}")
+    public String deleteUser(@PathVariable("id") Long id) {
         userService.delete(id);
         return "redirect:/admin/users";
     }
 
-    @GetMapping("/admin/findOneUser")
-    @ResponseBody
-    public User findOneUser(Long id) {
-        return userService.show(id);
-    }
 
     @PostMapping("/admin/users/create")
     public String addNewUser(@ModelAttribute("newUser") User user,
-                             @RequestParam(value = "ADMIN", required = false) boolean isAdmin,
-                             @RequestParam(value = "USER", required = false) boolean isUser,
                              BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return "admin/users/new";
+            return "/adminpage";
         }
-
-        Set<Role> roles = new HashSet<>();
-
-        if (isAdmin) {
-            roles.add(roleService.findRoleById(1));
-        }
-        if (isUser) {
-            roles.add(roleService.findRoleById(2));
-        }
-
-        user.setRoles(roles);
         userService.save(user);
         return "redirect:/admin/users";
     }
