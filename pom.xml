@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>net.rudikone</groupId>
-	<artifactId>springbootsecurity</artifactId>
+	<artifactId>personal-cabinet-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>SpringBootSecurity</name>
 	<description>This is spring-security project</description>
